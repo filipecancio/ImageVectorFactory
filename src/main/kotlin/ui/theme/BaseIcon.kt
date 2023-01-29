@@ -30,14 +30,14 @@ enum class BaseVector {
     FileSvg,
     Compose;
 
-    fun toPath(isDark: Boolean = false) = when (this) {
-        Compose -> composePath(BaseColor.Primary, isDark)
-        Plus -> plusPath(BaseColor.Primary, isDark)
-        Moon -> moonPath(BaseColor.Primary, isDark)
-        Minus -> minusPath(BaseColor.Primary, isDark)
-        Logo -> logoPath(BaseColor.Primary, isDark)
-        FileXml -> fileXmlPath(BaseColor.Primary, isDark)
-        FileSvg -> fileSvgPath(BaseColor.Primary, isDark)
+    fun toPath(isDark: Boolean = false, color: BaseColor = BaseColor.Primary) = when (this) {
+        Compose -> composePath(color, isDark)
+        Plus -> plusPath(color, isDark)
+        Moon -> moonPath(color, isDark)
+        Minus -> minusPath(color, isDark)
+        Logo -> logoPath(color, isDark)
+        FileXml -> fileXmlPath(color, isDark)
+        FileSvg -> fileSvgPath(color, isDark)
     }
 }
 

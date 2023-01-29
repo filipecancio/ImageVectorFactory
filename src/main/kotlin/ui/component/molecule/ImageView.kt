@@ -1,18 +1,21 @@
 package ui.component.molecule
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import ui.component.atom.GraphicButton
 import ui.theme.BaseColor
-import ui.theme.BaseIcon
 import ui.theme.BaseVector
 
 @Composable
@@ -20,7 +23,7 @@ fun ImageView(
     isDark: Boolean = false,
     imageVector: ImageVector? = null,
     onDarkClick: () -> Unit = {},
-) = Box(
+) = BoxWithConstraints(
     modifier = Modifier
         .size(
             width = 600.dp,
@@ -29,21 +32,31 @@ fun ImageView(
     contentAlignment = Alignment.Center
 ) {
     var sizeRatio by remember { mutableStateOf(1F) }
-    imageVector?.let {
+    if (imageVector != null) {
         Image(
             modifier = Modifier
                 .size(
-                    width = it.defaultWidth * sizeRatio,
-                    height = it.defaultHeight * sizeRatio,
+                    width = imageVector.defaultWidth * sizeRatio,
+                    height = imageVector.defaultHeight * sizeRatio,
                 ),
-            imageVector = it,
+            imageVector = imageVector,
+            contentScale = ContentScale.Crop,
             contentDescription = null,
         )
-    } ?: BaseIcon(
-        baseVector = BaseVector.Compose,
-        modifier = Modifier.size(127.dp),
-        tint = BaseColor.Secondary.toColor(isDark)
-    )
+    } else {
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .horizontalScroll(rememberScrollState())
+        ) {
+            Image(
+                imageVector = BaseVector.Compose.toPath(isDark,BaseColor.Secondary),
+                modifier = Modifier.size(127.dp * sizeRatio),
+                contentScale = ContentScale.Crop,
+                contentDescription = null
+            )
+        }
+    }
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),
         modifier = Modifier.align(Alignment.TopStart)
