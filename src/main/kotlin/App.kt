@@ -8,7 +8,7 @@ import ui.screen.MainScreen
 
 @ExperimentalMaterialApi
 fun main() = application {
-    val windowState = rememberWindowState(placement = WindowPlacement.Maximized)
+    val windowState = rememberWindowState(placement = WindowPlacement.Floating)
     Window(
         title = "Svg2Compose",
         icon = painterResource("icon.png"),
