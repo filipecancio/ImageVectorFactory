@@ -1,12 +1,13 @@
+package ui.screen
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -19,7 +20,6 @@ import ui.component.atom.TabButton
 import ui.component.molecule.ActionBar
 import ui.component.molecule.ImageView
 import ui.component.molecule.TopBar
-import ui.screen.MainController
 import ui.theme.BaseColor
 import ui.theme.BaseVector
 import ui.theme.getBaseType
@@ -29,14 +29,6 @@ import ui.theme.getBaseType
 fun MainScreen(controller: MainController) {
     MaterialTheme {
         val clipboardManager = LocalClipboardManager.current
-        var currentTabIndex by remember { mutableStateOf(0) }
-//        var svgFileTextFieldValue by remember { mutableStateOf(TextFieldValue("")) }
-        var vectorDrawableTextFieldValue by remember { mutableStateOf(TextFieldValue("")) }
-        var svgPathTextFieldValue by remember { mutableStateOf(TextFieldValue("")) }
-        var pathDecomposed by remember { mutableStateOf("") }
-        var imageVector by remember { mutableStateOf<ImageVector?>(null) }
-        var unknownColors by remember { mutableStateOf(emptySet<String>()) }
-        var iconName by remember { mutableStateOf(TextFieldValue("Untitled")) }
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -48,24 +40,24 @@ fun MainScreen(controller: MainController) {
                 TabButton(
                     text = "Drawable",
                     baseVector = BaseVector.FileXml,
-                    isEnabled = currentTabIndex == 0,
+                    isEnabled = controller.currentTabIndex == 0,
                     onClick = {
-                        pathDecomposed = ""
+                        controller.pathDecomposed = ""
                         controller.imageVectorCode = ""
-                        imageVector = null
-                        currentTabIndex = 0
+                        controller.imageVector = null
+                        controller.currentTabIndex = 0
                     },
                     isDark = controller.isDark
                 )
                 TabButton(
                     text = "SVG Path",
                     baseVector = BaseVector.FileSvg,
-                    isEnabled = currentTabIndex == 1,
+                    isEnabled = controller.currentTabIndex == 1,
                     onClick = {
-                        pathDecomposed = ""
+                        controller.pathDecomposed = ""
                         controller.imageVectorCode = ""
-                        imageVector = null
-                        currentTabIndex = 1
+                        controller.imageVector = null
+                        controller.currentTabIndex = 1
                     },
                     isDark = controller.isDark
                 )
@@ -73,12 +65,12 @@ fun MainScreen(controller: MainController) {
                 TabButton(
                     text = "SVG File",
                     baseVector = BaseVector.FileSvg,
-                    isEnabled = currentTabIndex == 2,
+                    isEnabled = controller.currentTabIndex == 2,
                     onClick = {
-                        pathDecomposed = ""
+                        controller.pathDecomposed = ""
                         controller.imageVectorCode = ""
-                        imageVector = null
-                        currentTabIndex = 2
+                        controller.imageVector = null
+                        controller.currentTabIndex = 2
                     }
                 )
                 */
@@ -91,7 +83,7 @@ fun MainScreen(controller: MainController) {
                     horizontalAlignment = Alignment.End
                 ) {
                     Text(
-                        when (currentTabIndex) {
+                        when (controller.currentTabIndex) {
                             0 -> "Insert Drawable path here:"
                             else -> "Insert SVG path here:"
                         },
@@ -99,14 +91,14 @@ fun MainScreen(controller: MainController) {
                         style = getBaseType(controller.isDark).body1
                     )
                     CodeEdit(
-                        value = when (currentTabIndex) {
-                            0 -> vectorDrawableTextFieldValue
-                            else -> svgPathTextFieldValue
+                        value = when (controller.currentTabIndex) {
+                            0 -> controller.vectorDrawableTextFieldValue
+                            else -> controller.svgPathTextFieldValue
                         },
                         onValueChange = {
-                            when (currentTabIndex) {
-                                0 -> vectorDrawableTextFieldValue = it
-                                else -> svgPathTextFieldValue = it
+                            when (controller.currentTabIndex) {
+                                0 -> controller.vectorDrawableTextFieldValue = it
+                                else -> controller.svgPathTextFieldValue = it
                             }
                         },
                         isDark = controller.isDark
@@ -115,17 +107,17 @@ fun MainScreen(controller: MainController) {
                         text = "Convert",
                         onClick = {
                             val svgData = controller.buildSvgData(
-                                currentTabIndex = currentTabIndex,
-                                vectorDrawableValue = vectorDrawableTextFieldValue.text,
-                                svgPathValue = svgPathTextFieldValue.text,
-                                onColorsNotFound = { unknownColors = it },
+                                currentTabIndex = controller.currentTabIndex,
+                                vectorDrawableValue = controller.vectorDrawableTextFieldValue.text,
+                                svgPathValue = controller.svgPathTextFieldValue.text,
+                                onColorsNotFound = { controller.unknownColors = it },
                             ) ?: return@ActionButton
 
-                            controller.imageVectorCode = when (currentTabIndex) {
+                            controller.imageVectorCode = when (controller.currentTabIndex) {
                                 0 -> svgData.toImageVectorCode()
                                 else -> svgData.toImageVectorCode()
                             }
-                            imageVector = svgData.toImageVector()
+                            controller.imageVector = svgData.toImageVector()
                         },
                         isDark = controller.isDark
                     )
@@ -149,15 +141,15 @@ fun MainScreen(controller: MainController) {
                         buttonText = "Copy",
                         onClick = { controller.showIconNameDialog = true },
                         selected = true,
-                        value = iconName,
-                        onValueChange = { iconName = it },
+                        value = controller.iconName,
+                        onValueChange = { controller.iconName = it },
                         isDark = controller.isDark
                     )
                 }
             }
             ImageView(
                 isDark = controller.isDark,
-                imageVector = imageVector,
+                imageVector = controller.imageVector,
                 onDarkClick = { controller.isDark = !controller.isDark }
             )
         }
@@ -168,24 +160,24 @@ fun MainScreen(controller: MainController) {
                 },
                 onCancelClick = { controller.showIconNameDialog = false },
             )
-        } else if (unknownColors.isNotEmpty()) {
+        } else if (controller.unknownColors.isNotEmpty()) {
             AskForValidColorDialog(
-                colorsValue = unknownColors,
+                colorsValue = controller.unknownColors,
                 onUnknownColorsMapped = { validColors ->
                     UnknownColors.unknownColors.putAll(validColors)
-                    unknownColors = emptySet()
+                    controller.unknownColors = emptySet()
 
                     if (validColors.isNotEmpty()) {
                         val svgData = controller.buildSvgData(
-                            currentTabIndex = currentTabIndex,
-                            vectorDrawableValue = vectorDrawableTextFieldValue.text,
-                            svgPathValue = svgPathTextFieldValue.text,
-                            onColorsNotFound = { unknownColors = it },
+                            currentTabIndex = controller.currentTabIndex,
+                            vectorDrawableValue = controller.vectorDrawableTextFieldValue.text,
+                            svgPathValue = controller.svgPathTextFieldValue.text,
+                            onColorsNotFound = { controller.unknownColors = it },
                         ) ?: return@AskForValidColorDialog
 
-                        pathDecomposed = svgData.toPathDecomposed()
+                        controller.pathDecomposed = svgData.toPathDecomposed()
                         controller.imageVectorCode = svgData.toImageVectorCode()
-                        imageVector = svgData.toImageVector()
+                        controller.imageVector = svgData.toImageVector()
                     }
                 },
             )
