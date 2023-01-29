@@ -1,11 +1,11 @@
-import androidx.compose.foundation.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalClipboardManager
@@ -23,6 +23,7 @@ import ui.component.atom.ActionButton
 import ui.component.atom.CodeEdit
 import ui.component.atom.TabButton
 import ui.component.molecule.ActionBar
+import ui.component.molecule.ImageView
 import ui.component.molecule.TopBar
 import ui.theme.BaseColor
 import ui.theme.BaseVector
@@ -40,7 +41,6 @@ fun MainScreen() {
         var pathDecomposed by remember { mutableStateOf("") }
         var imageVectorCode by remember { mutableStateOf("") }
         var imageVector by remember { mutableStateOf<ImageVector?>(null) }
-        var showImageBackground by remember { mutableStateOf(false) }
         var showImageBlackBackground by remember { mutableStateOf(false) }
         var showIconNameDialog by remember { mutableStateOf(false) }
         var unknownColors by remember { mutableStateOf(emptySet<String>()) }
@@ -161,40 +161,15 @@ fun MainScreen() {
                     )
                 }
             }
+            ImageView(
+                isDark = showImageBlackBackground,
+                imageVector = imageVector,
+                onDarkClick = { showImageBlackBackground = !showImageBlackBackground }
+            )
             Spacer(modifier = Modifier.height(12.dp))
             Divider()
             if (pathDecomposed.isNotBlank() && imageVectorCode.isNotBlank()) {
                 Spacer(modifier = Modifier.height(12.dp))
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                    Spacer(modifier = Modifier.weight(1F))
-                    Row(
-                        modifier = Modifier.weight(1F),
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text(
-                            text = "Show background",
-                            color = White,
-                            modifier = Modifier.clickable { showImageBackground = !showImageBackground },
-                        )
-                        Checkbox(
-                            checked = showImageBackground,
-                            onCheckedChange = { showImageBackground = it },
-                        )
-                        if (showImageBackground) {
-                            Spacer(modifier = Modifier.width(16.dp))
-                            Text(
-                                text = "Use black background",
-                                color = White,
-                                modifier = Modifier.clickable { showImageBlackBackground = !showImageBlackBackground },
-                            )
-                            Checkbox(
-                                checked = showImageBlackBackground,
-                                onCheckedChange = { showImageBlackBackground = it },
-                            )
-                        }
-                    }
-                }
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -209,42 +184,6 @@ fun MainScreen() {
                         lineHeight = 32.sp,
                         color = White,
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    imageVector?.let {
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Column(modifier = Modifier.weight(1F)) {
-                            var imageSizeRatio by remember { mutableStateOf(1F) }
-                            Row {
-                                OutlinedButton(
-                                    onClick = { imageSizeRatio /= 1.5F },
-                                ) {
-                                    Text("-")
-                                }
-                                OutlinedButton(
-                                    onClick = { imageSizeRatio *= 1.5F },
-                                ) {
-                                    Text("+")
-                                }
-                            }
-                            Image(
-                                modifier = Modifier
-                                    .size(
-                                        width = it.defaultWidth * imageSizeRatio,
-                                        height = it.defaultHeight * imageSizeRatio,
-                                    )
-                                    .background(
-                                        if (showImageBackground) {
-                                            if (showImageBlackBackground) Black else White
-                                        } else {
-                                            Color.Unspecified
-                                        }
-                                    ),
-                                imageVector = it,
-                                contentDescription = null,
-                            )
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(24.dp))
                 }
             }
         }

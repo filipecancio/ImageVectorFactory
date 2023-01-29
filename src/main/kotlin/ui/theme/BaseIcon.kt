@@ -27,9 +27,11 @@ enum class BaseVector {
     Minus,
     Logo,
     FileXml,
-    FileSvg;
+    FileSvg,
+    Compose;
 
     fun toPath(isDark: Boolean = false) = when (this) {
+        Compose -> composePath(BaseColor.Primary, isDark)
         Plus -> plusPath(BaseColor.Primary, isDark)
         Moon -> moonPath(BaseColor.Primary, isDark)
         Minus -> minusPath(BaseColor.Primary, isDark)
@@ -426,6 +428,51 @@ private fun fileSvgPath(
         lineTo(8.461F, 2.007F)
         curveTo(8.553F, 2.002F, 8.645F, 2.0F, 8.738F, 2.0F)
         horizontalLineTo(9.598F)
+        close()
+    }
+}
+
+private fun composePath(
+    baseColor: BaseColor = BaseColor.Primary,
+    isDark: Boolean = false
+) = materialIcon(name = "Compose") {
+    path(
+        fill = SolidColor(baseColor.toColor(isDark)),
+        fillAlpha = 1.0F,
+        strokeAlpha = 1.0F,
+        strokeLineWidth = 0.0F,
+        strokeLineCap = StrokeCap.Butt,
+        strokeLineJoin = StrokeJoin.Miter,
+        strokeLineMiter = 4.0F,
+        pathFillType = PathFillType.EvenOdd,
+    ) {
+        moveTo(13.847F, 1.495F)
+        curveTo(12.704F, 0.835F, 11.296F, 0.835F, 10.153F, 1.495F)
+        lineTo(3.848F, 5.135F)
+        curveTo(2.704F, 5.795F, 2.0F, 7.015F, 2.0F, 8.335F)
+        verticalLineTo(15.616F)
+        curveTo(2.0F, 16.936F, 2.704F, 18.156F, 3.848F, 18.816F)
+        lineTo(10.153F, 22.456F)
+        curveTo(11.296F, 23.116F, 12.704F, 23.116F, 13.847F, 22.456F)
+        lineTo(20.153F, 18.816F)
+        curveTo(21.296F, 18.156F, 22.0F, 16.936F, 22.0F, 15.616F)
+        verticalLineTo(8.335F)
+        curveTo(22.0F, 7.015F, 21.296F, 5.795F, 20.153F, 5.135F)
+        lineTo(13.847F, 1.495F)
+
+        moveTo(12.604F, 7.68F)
+        curveTo(12.116F, 7.395F, 11.514F, 7.395F, 11.026F, 7.68F)
+        lineTo(8.332F, 9.25F)
+        curveTo(7.843F, 9.535F, 7.543F, 10.061F, 7.543F, 10.63F)
+        verticalLineTo(13.771F)
+        curveTo(7.543F, 14.34F, 7.843F, 14.866F, 8.332F, 15.151F)
+        lineTo(11.026F, 16.721F)
+        curveTo(11.514F, 17.006F, 12.116F, 17.006F, 12.604F, 16.721F)
+        lineTo(15.298F, 15.151F)
+        curveTo(15.786F, 14.866F, 16.087F, 14.34F, 16.087F, 13.771F)
+        verticalLineTo(10.63F)
+        curveTo(16.087F, 10.061F, 15.786F, 9.535F, 15.298F, 9.25F)
+        lineTo(12.604F, 7.68F)
         close()
     }
 }
