@@ -20,16 +20,19 @@ fun CodeEdit(
     onValueChange: (TextFieldValue) -> Unit,
     isDark: Boolean = false,
     textStyle: TextStyle =  getBaseType(isDark).body1,
+    modifier: Modifier = defaultModifier(isDark)
 ) = BasicTextField(
     value = value,
     onValueChange = onValueChange,
-    modifier = Modifier
-        .size(
-            width = 300.dp,
-            height = 100.dp
-        )
-        .clip(RoundedCornerShape(10.dp))
-        .background(BaseColor.Secondary.toColor(isDark))
-        .padding(16.dp),
+    modifier = modifier,
     textStyle = textStyle
 )
+
+private fun defaultModifier(isDark: Boolean) = Modifier
+    .size(
+        width = 300.dp,
+        height = 100.dp
+    )
+    .clip(RoundedCornerShape(10.dp))
+    .background(BaseColor.Secondary.toColor(isDark))
+    .padding(16.dp)

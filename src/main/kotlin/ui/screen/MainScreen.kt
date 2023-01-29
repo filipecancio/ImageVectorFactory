@@ -22,6 +22,7 @@ import ui.component.IconNameDialog
 import ui.component.atom.ActionButton
 import ui.component.atom.CodeEdit
 import ui.component.atom.TabButton
+import ui.component.molecule.ActionBar
 import ui.component.molecule.TopBar
 import ui.theme.BaseColor
 import ui.theme.BaseVector
@@ -43,6 +44,7 @@ fun MainScreen() {
         var showImageBlackBackground by remember { mutableStateOf(false) }
         var showIconNameDialog by remember { mutableStateOf(false) }
         var unknownColors by remember { mutableStateOf(emptySet<String>()) }
+        var iconName by remember { mutableStateOf(TextFieldValue("Untitled")) }
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -139,10 +141,12 @@ fun MainScreen() {
                         modifier = Modifier.width(300.dp),
                         style = getBaseType(showImageBlackBackground).body2
                     )
-                    ActionButton(
-                        text = "Copy",
+                    ActionBar(
+                        buttonText = "Copy",
                         onClick = { showIconNameDialog = true },
-                        selected = true
+                        selected = true,
+                        value = iconName,
+                        onValueChange = { iconName = it }
                     )
                 }
             }
