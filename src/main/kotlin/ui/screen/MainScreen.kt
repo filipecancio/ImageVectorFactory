@@ -4,7 +4,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
@@ -20,6 +19,8 @@ import domain.SvgPathParser
 import domain.UnknownColors
 import domain.VectorDrawableParser
 import model.SvgData
+import ui.component.AskForValidColorDialog
+import ui.component.IconNameDialog
 
 @ExperimentalMaterialApi
 @Composable
@@ -270,66 +271,6 @@ fun MainScreen() {
             )
         }
     }
-}
-
-@ExperimentalMaterialApi
-@Composable
-private fun AskForValidColorDialog(
-    colorsValue: Set<String>,
-    onUnknownColorsMapped: (validColors: Map<String, String>) -> Unit,
-) {
-    val validColorValues = mutableMapOf<String, String>()
-    AlertDialog(
-        modifier = Modifier.focusable(true).focusTarget(),
-        title = { Text("Enter a valid color for those unknown colors") },
-        text = {
-            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                colorsValue.forEach { colorValue ->
-                    var validColor by remember { mutableStateOf(TextFieldValue("")) }
-                    Text(colorValue)
-                    OutlinedTextField(
-                        value = validColor,
-                        onValueChange = {
-                            validColor = it
-                            validColorValues[colorValue] = it.text
-                        },
-                        label = { Text("Hexadecimal color") },
-                        placeholder = { Text("#FF00FF") },
-                    )
-                }
-            }
-        },
-        buttons = {
-            TextButton(onClick = { onUnknownColorsMapped(validColorValues) }) {
-                Text("Valid those colors")
-            }
-        },
-        onDismissRequest = { onUnknownColorsMapped(emptyMap()) },
-    )
-}
-
-@ExperimentalMaterialApi
-@Composable
-private fun IconNameDialog(onValidateClick: (iconName: String) -> Unit, onCancelClick: () -> Unit) {
-    val iconName = remember { mutableStateOf(TextFieldValue("")) }
-    AlertDialog(
-        title = { Text("Choose an icon name") },
-        text = {
-            OutlinedTextField(
-                value = iconName.value,
-                onValueChange = { iconName.value = it },
-                label = { Text("Icon name") },
-            )
-        },
-        buttons = {
-            TextButton(
-                onClick = { onValidateClick(iconName.value.text) },
-            ) {
-                Text("Copy code")
-            }
-        },
-        onDismissRequest = onCancelClick,
-    )
 }
 
 private fun buildSvgData(
