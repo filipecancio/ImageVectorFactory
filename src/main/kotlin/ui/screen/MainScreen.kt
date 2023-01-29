@@ -64,7 +64,7 @@ fun MainScreen() {
                     )
                     ActionButton(
                         text = "Convert",
-                        onClick = { controller.updateImageVectorCode() },
+                        onClick = { controller.generateSvgData() },
                         isDark = controller.isDark
                     )
                 }
@@ -88,7 +88,7 @@ fun MainScreen() {
                         onClick = { controller.copyImageVector() },
                         selected = true,
                         value = controller.iconName,
-                        onValueChange = { controller.replaceCodeName(it) },
+                        onValueChange = { controller.replaceImageVectorCode(it) },
                         isDark = controller.isDark
                     )
                 }

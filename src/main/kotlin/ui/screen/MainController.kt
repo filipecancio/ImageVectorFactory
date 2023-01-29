@@ -19,8 +19,9 @@ class MainController(
     var isDark by mutableStateOf(false)
     var currentTabIndex by mutableStateOf(0)
     var textFieldValue by mutableStateOf(TextFieldValue(""))
+    private var svgData: SvgData? by mutableStateOf(null)
     var imageVectorCode by mutableStateOf("")
-    var pathDecomposed by mutableStateOf("")
+    private var pathDecomposed by mutableStateOf("")
     var imageVector by mutableStateOf<ImageVector?>(null)
     var unknownColors by mutableStateOf(emptySet<String>())
     var iconName by mutableStateOf(TextFieldValue("untitled"))
@@ -43,20 +44,7 @@ class MainController(
         clipboardManager.setText(AnnotatedString(imageVectorCode))
     }
 
-    fun replaceCodeName(newName: TextFieldValue) {
-        val oldName = iconName
-        iconName = newName
-        val path = imageVectorCode.replace(
-            "${oldName.text.firstOrNull()?.uppercase()}${oldName.text.substring(1)}",
-            "${iconName.text.firstOrNull()?.uppercase()}${iconName.text.substring(1)}",
-        ).replace(
-            "${oldName.text.firstOrNull()?.lowercase()}${oldName.text.substring(1)}",
-            "${iconName.text.firstOrNull()?.lowercase()}${iconName.text.substring(1)}",
-        )
-        imageVectorCode = path
-    }
-
-    fun buildSvgData(): SvgData? = if (currentTabIndex == 0 && textFieldValue.text.isNotBlank()) {
+    private fun buildSvgData(): SvgData? = if (currentTabIndex == 0 && textFieldValue.text.isNotBlank()) {
         VectorDrawableParser.toSvgData(textFieldValue.text) { unknownColors = it }
     } else if (currentTabIndex == 1 && textFieldValue.text.isNotBlank()) {
         SvgPathParser.toSvgData(svgPath = textFieldValue.text)
@@ -64,14 +52,22 @@ class MainController(
         null
     }
 
-    fun updateImageVectorCode(){
-        val svgData = buildSvgData() ?: return
+    fun generateSvgData() {
+        svgData = buildSvgData() ?: return
+        updateImageVectorCode()
+    }
 
+    fun replaceImageVectorCode(newName: TextFieldValue) {
+        iconName = newName
+        updateImageVectorCode()
+    }
+
+    private fun updateImageVectorCode() {
         imageVectorCode = when (currentTabIndex) {
-            0 -> svgData.toImageVectorCode()
-            else -> svgData.toImageVectorCode()
+            0 -> svgData!!.toImageVectorCode(iconName.text)
+            else -> svgData!!.toImageVectorCode(iconName.text)
         }
-        imageVector = svgData.toImageVector()
+        imageVector = svgData!!.toImageVector()
     }
 
     fun fixUnknownColors(validColors: Map<String, String>) {
@@ -82,7 +78,8 @@ class MainController(
             updateSvgCode()
         }
     }
-    fun updateSvgCode(){
+
+    private fun updateSvgCode() {
         val svgData = buildSvgData() ?: return
 
         pathDecomposed = svgData.toPathDecomposed()
