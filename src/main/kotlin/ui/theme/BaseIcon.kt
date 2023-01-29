@@ -1,68 +1,45 @@
 package ui.theme
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.size
+import androidx.compose.material.Icon
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.icons.materialIcon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.PathFillType
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.vector.path
-import androidx.compose.ui.unit.dp
 
-val color = BaseColor.values()
-
-@Preview
 @Composable
-fun BasicIconsPreview() = Column {
-    color.map {
-        Image(
-            imageVector = plusPath(it),
-            contentDescription = "loading",
-            modifier = Modifier.size(50.dp)
-        )
-    }
-    color.map {
-        Image(
-            imageVector = moonPath(it),
-            contentDescription = "loading",
-            modifier = Modifier.size(50.dp)
-        )
-    }
-    color.map {
-        Image(
-            imageVector = minusPath(it),
-            contentDescription = "loading",
-            modifier = Modifier.size(50.dp)
-        )
-    }
-    color.map {
-        Image(
-            imageVector = logoPath(it),
-            contentDescription = "loading",
-            modifier = Modifier.size(50.dp)
-        )
-    }
-    color.map {
-        Image(
-            imageVector = fileXmlPath(it),
-            contentDescription = "loading",
-            modifier = Modifier.size(50.dp)
-        )
-    }
-    color.map {
-        Image(
-            imageVector = fileSvgPath(it),
-            contentDescription = "loading",
-            modifier = Modifier.size(50.dp)
-        )
+fun BaseIcon(
+    modifier: Modifier = Modifier,
+    tint: Color = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
+    baseVector: BaseVector = BaseVector.Logo
+) = Icon(
+    imageVector = baseVector.toPath(),
+    contentDescription = "",
+    modifier = modifier,
+    tint = tint
+)
+
+enum class BaseVector {
+    Plus,
+    Moon,
+    Minus,
+    Logo,
+    FileXml,
+    FileSvg;
+
+    fun toPath(isDark: Boolean = false) = when (this) {
+        Plus -> plusPath(BaseColor.Primary, isDark)
+        Moon -> moonPath(BaseColor.Primary, isDark)
+        Minus -> minusPath(BaseColor.Primary, isDark)
+        Logo -> logoPath(BaseColor.Primary, isDark)
+        FileXml -> fileXmlPath(BaseColor.Primary, isDark)
+        FileSvg -> fileSvgPath(BaseColor.Primary, isDark)
     }
 }
-fun plusPath(
+
+private fun plusPath(
     baseColor: BaseColor = BaseColor.Primary,
     isDark: Boolean = false
 ) = materialIcon(name = "Plus") {
@@ -97,7 +74,7 @@ fun plusPath(
     }
 }
 
-fun moonPath(
+private fun moonPath(
     baseColor: BaseColor = BaseColor.Primary,
     isDark: Boolean = false
 ) = materialIcon(name = "Moon") {
@@ -114,7 +91,7 @@ fun moonPath(
     }
 }
 
-fun minusPath(
+private fun minusPath(
     baseColor: BaseColor = BaseColor.Primary,
     isDark: Boolean = false
 ) = materialIcon(name = "Minus") {
@@ -132,7 +109,7 @@ fun minusPath(
     }
 }
 
-fun logoPath(
+private fun logoPath(
     baseColor: BaseColor = BaseColor.Primary,
     isDark: Boolean = false
 ) = materialIcon(name = "Logo") {
@@ -199,7 +176,7 @@ fun logoPath(
     }
 }
 
-fun fileXmlPath(
+private fun fileXmlPath(
     baseColor: BaseColor = BaseColor.Primary,
     isDark: Boolean = false
 ) = materialIcon(name = "FileXml") {
@@ -310,7 +287,7 @@ fun fileXmlPath(
     }
 }
 
-fun fileSvgPath(
+private fun fileSvgPath(
     baseColor: BaseColor = BaseColor.Primary,
     isDark: Boolean = false
 ) = materialIcon(name = "FileSvg") {

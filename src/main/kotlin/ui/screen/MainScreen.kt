@@ -21,6 +21,7 @@ import domain.VectorDrawableParser
 import model.SvgData
 import ui.component.AskForValidColorDialog
 import ui.component.IconNameDialog
+import ui.component.molecule.TopBar
 
 @ExperimentalMaterialApi
 @Composable
@@ -44,6 +45,7 @@ fun MainScreen() {
                 .background(MaterialTheme.colors.background),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            TopBar(showImageBlackBackground)
             TabRow(selectedTabIndex = currentTabIndex) {
 //                Tab(
 //                    selected = currentTabIndex == 0,
@@ -106,6 +108,7 @@ fun MainScreen() {
                             label = { Text(text = "Vector Drawable file") },
                         )
                     }
+
                     1 -> {
                         OutlinedTextField(
                             modifier = Modifier

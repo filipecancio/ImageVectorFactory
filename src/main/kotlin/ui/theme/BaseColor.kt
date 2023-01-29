@@ -1,5 +1,8 @@
 package ui.theme
 
+import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 val blue01 = Color(0xFFEBFBFF)
@@ -27,4 +30,10 @@ enum class BaseColor(
     Blue02(blue02, blue04);
 
     fun toColor(isDark: Boolean = false) = if(isDark) this.ligth else this.dark
+}
+
+@Preview
+@Composable
+fun example(){
+    Text("text")
 }
