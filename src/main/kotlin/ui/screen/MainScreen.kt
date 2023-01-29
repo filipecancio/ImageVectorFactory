@@ -21,7 +21,6 @@ import ui.component.molecule.ActionBar
 import ui.component.molecule.ImageView
 import ui.component.molecule.TopBar
 import ui.theme.BaseColor
-import ui.theme.BaseVector
 import ui.theme.getBaseType
 
 @ExperimentalMaterialApi
@@ -38,30 +37,15 @@ fun MainScreen() {
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             TopBar(controller.isDark) {
-                TabButton(
-                    text = "Drawable",
-                    baseVector = BaseVector.FileXml,
-                    isEnabled = controller.currentTabIndex == 0,
-                    onClick = {
-                        controller.pathDecomposed = ""
-                        controller.imageVectorCode = ""
-                        controller.imageVector = null
-                        controller.currentTabIndex = 0
-                    },
-                    isDark = controller.isDark
-                )
-                TabButton(
-                    text = "SVG Path",
-                    baseVector = BaseVector.FileSvg,
-                    isEnabled = controller.currentTabIndex == 1,
-                    onClick = {
-                        controller.pathDecomposed = ""
-                        controller.imageVectorCode = ""
-                        controller.imageVector = null
-                        controller.currentTabIndex = 1
-                    },
-                    isDark = controller.isDark
-                )
+                controller.convertOptions.mapIndexed { index, item ->
+                    TabButton(
+                        text = item.label,
+                        baseVector = item.icon,
+                        isEnabled = controller.currentTabIndex == index,
+                        onClick = { controller.clearValues(index) },
+                        isDark = controller.isDark
+                    )
+                }
             }
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -71,24 +55,13 @@ fun MainScreen() {
                     horizontalAlignment = Alignment.End
                 ) {
                     Text(
-                        when (controller.currentTabIndex) {
-                            0 -> "Insert Drawable path here:"
-                            else -> "Insert SVG path here:"
-                        },
+                        text = controller.getCurrentPlaceholder(),
                         modifier = Modifier.width(300.dp),
                         style = getBaseType(controller.isDark).body1
                     )
                     CodeEdit(
-                        value = when (controller.currentTabIndex) {
-                            0 -> controller.vectorDrawableTextFieldValue
-                            else -> controller.svgPathTextFieldValue
-                        },
-                        onValueChange = {
-                            when (controller.currentTabIndex) {
-                                0 -> controller.vectorDrawableTextFieldValue = it
-                                else -> controller.svgPathTextFieldValue = it
-                            }
-                        },
+                        value = controller.textFieldValue,
+                        onValueChange = { controller.textFieldValue = it },
                         isDark = controller.isDark
                     )
                     ActionButton(
@@ -96,8 +69,6 @@ fun MainScreen() {
                         onClick = {
                             val svgData = controller.buildSvgData(
                                 currentTabIndex = controller.currentTabIndex,
-                                vectorDrawableValue = controller.vectorDrawableTextFieldValue.text,
-                                svgPathValue = controller.svgPathTextFieldValue.text,
                                 onColorsNotFound = { controller.unknownColors = it },
                             ) ?: return@ActionButton
 
@@ -156,8 +127,6 @@ fun MainScreen() {
                     if (validColors.isNotEmpty()) {
                         val svgData = controller.buildSvgData(
                             currentTabIndex = controller.currentTabIndex,
-                            vectorDrawableValue = controller.vectorDrawableTextFieldValue.text,
-                            svgPathValue = controller.svgPathTextFieldValue.text,
                             onColorsNotFound = { controller.unknownColors = it },
                         ) ?: return@AskForValidColorDialog
 
