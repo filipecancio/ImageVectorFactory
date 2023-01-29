@@ -21,9 +21,11 @@ import domain.VectorDrawableParser
 import model.SvgData
 import ui.component.AskForValidColorDialog
 import ui.component.IconNameDialog
+import ui.component.atom.CodeEdit
 import ui.component.atom.TabButton
 import ui.component.molecule.TopBar
 import ui.theme.BaseVector
+import ui.theme.getBaseType
 
 @ExperimentalMaterialApi
 @Composable
@@ -85,51 +87,34 @@ fun MainScreen() {
                 */
             }
             Spacer(modifier = Modifier.height(16.dp))
-            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                when (currentTabIndex) {
-//                0 -> {
-//                    OutlinedTextField(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(horizontal = 16.dp),
-//                        colors = TextFieldDefaults.outlinedTextFieldColors(
-//                            textColor = White,
-//                        ),
-//                        value = svgFileTextFieldValue,
-//                        onValueChange = { svgFileTextFieldValue = it },
-//                        label = { Text(text = "SVG file") },
-//                    )
-//                }
-                    0 -> {
-                        OutlinedTextField(
-                            modifier = Modifier
-                                .weight(1F)
-                                .padding(horizontal = 16.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                textColor = White,
-                            ),
-                            maxLines = 4,
-                            value = vectorDrawableTextFieldValue,
-                            onValueChange = { vectorDrawableTextFieldValue = it },
-                            label = { Text(text = "Vector Drawable file") },
-                        )
-                    }
-
-                    1 -> {
-                        OutlinedTextField(
-                            modifier = Modifier
-                                .weight(1F)
-                                .padding(horizontal = 16.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                textColor = White,
-                            ),
-                            maxLines = 4,
-                            value = svgPathTextFieldValue,
-                            onValueChange = { svgPathTextFieldValue = it },
-                            label = { Text(text = "SVG path") },
-                        )
-                    }
+            Row {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalAlignment = Alignment.End
+                ){
+                    Text(
+                        when(currentTabIndex){
+                            0 -> "Insert Drawable path here:"
+                            else -> "Insert SVG path here:"
+                        },
+                        modifier = Modifier.width(300.dp),
+                        style = getBaseType(showImageBlackBackground).body1
+                    )
+                    CodeEdit(
+                        value = when(currentTabIndex){
+                            0 -> vectorDrawableTextFieldValue
+                            else -> svgPathTextFieldValue
+                        },
+                        onValueChange = {
+                            when (currentTabIndex) {
+                                0 -> vectorDrawableTextFieldValue = it
+                                else -> svgPathTextFieldValue = it
+                            }
+                        },
+                    )
                 }
+            }
+            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Button(
                     onClick = {
                         val svgData = buildSvgData(
