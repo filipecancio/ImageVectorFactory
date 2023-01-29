@@ -11,10 +11,15 @@ val projectFontFamily: FontFamily = FontFamily(
     Font("font/fira_code_regular.ttf")
 )
 
-val BaseType = Typography(
+fun getBaseType(isDark: Boolean) = Typography(
     body1 = TextStyle(
         fontFamily = projectFontFamily,
-        color = BaseColor.Tertiary.toColor(),
+        color = BaseColor.Tertiary.toColor(isDark),
+        fontSize = 12.sp
+    ),
+    body2 = TextStyle(
+        fontFamily = projectFontFamily,
+        color = BaseColor.Blue02.toColor(isDark),
         fontSize = 12.sp
     )
 )

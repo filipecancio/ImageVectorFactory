@@ -21,7 +21,9 @@ import domain.VectorDrawableParser
 import model.SvgData
 import ui.component.AskForValidColorDialog
 import ui.component.IconNameDialog
+import ui.component.atom.TabButton
 import ui.component.molecule.TopBar
+import ui.theme.BaseVector
 
 @ExperimentalMaterialApi
 @Composable
@@ -45,8 +47,31 @@ fun MainScreen() {
                 .background(MaterialTheme.colors.background),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            TopBar(showImageBlackBackground)
-            TabRow(selectedTabIndex = currentTabIndex) {
+            TopBar(showImageBlackBackground) {
+                TabButton(
+                    text = "Drawable",
+                    baseVector = BaseVector.FileXml,
+                    isEnabled = currentTabIndex == 0,
+                    onClick = {
+                        pathDecomposed = ""
+                        imageVectorCode = ""
+                        imageVector = null
+                        currentTabIndex = 0
+                    }
+                )
+                TabButton(
+                    text = "SVG File",
+                    baseVector = BaseVector.FileSvg,
+                    isEnabled = currentTabIndex == 1,
+                    onClick = {
+                        pathDecomposed = ""
+                        imageVectorCode = ""
+                        imageVector = null
+                        currentTabIndex = 1
+                    }
+                )
+            }
+            //TabRow(selectedTabIndex = currentTabIndex) {
 //                Tab(
 //                    selected = currentTabIndex == 0,
 //                    onClick = {
@@ -57,27 +82,16 @@ fun MainScreen() {
 //                    },
 //                    text = { Text(text = "SVG file") },
 //                )
-                Tab(
-                    selected = currentTabIndex == 0,
-                    onClick = {
-                        pathDecomposed = ""
-                        imageVectorCode = ""
-                        imageVector = null
-                        currentTabIndex = 0
-                    },
-                    text = { Text(text = "Vector Drawable file") },
-                )
-                Tab(
-                    selected = currentTabIndex == 1,
-                    onClick = {
-                        pathDecomposed = ""
-                        imageVectorCode = ""
-                        imageVector = null
-                        currentTabIndex = 1
-                    },
-                    text = { Text(text = "SVG path") },
-                )
-            }
+            //Tab(
+            //    selected = currentTabIndex == 0,
+            //    text = { Text(text = "Vector Drawable file") },
+            //)
+            //Tab(
+            //     selected = currentTabIndex == 1,
+            //
+            //    text = { Text(text = "SVG path") },
+            // )
+            //}
             Spacer(modifier = Modifier.height(16.dp))
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 when (currentTabIndex) {

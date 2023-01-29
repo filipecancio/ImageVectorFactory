@@ -9,12 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ui.theme.BaseColor
 import ui.theme.BaseIcon
-import ui.theme.BaseType
 import ui.theme.BaseVector
+import ui.theme.getBaseType
 
 @Composable
 fun TopBar(
     isDark: Boolean,
+    content: @Composable RowScope.() -> Unit
 ) = Row(
     modifier = Modifier
         .fillMaxWidth()
@@ -37,7 +38,13 @@ fun TopBar(
         )
         Text(
             "ImageVector Factory",
-            style = BaseType.body1
+            style = getBaseType(isDark).body1
         )
+    }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        content()
     }
 }
