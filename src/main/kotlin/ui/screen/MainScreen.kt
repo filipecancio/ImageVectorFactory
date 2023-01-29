@@ -1,18 +1,17 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.darkColors
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import domain.SvgPathParser
 import domain.UnknownColors
 import domain.VectorDrawableParser
@@ -129,8 +128,10 @@ fun MainScreen() {
                                 onColorsNotFound = { unknownColors = it },
                             ) ?: return@ActionButton
 
-                            pathDecomposed = svgData.toPathDecomposed()
-                            imageVectorCode = svgData.toImageVectorCode()
+                            imageVectorCode = when (currentTabIndex) {
+                                0 -> svgData.toImageVectorCode()
+                                else -> svgData.toImageVectorCode()
+                            }
                             imageVector = svgData.toImageVector()
                         },
                         isDark = showImageBlackBackground
@@ -166,26 +167,6 @@ fun MainScreen() {
                 imageVector = imageVector,
                 onDarkClick = { showImageBlackBackground = !showImageBlackBackground }
             )
-            Spacer(modifier = Modifier.height(12.dp))
-            Divider()
-            if (pathDecomposed.isNotBlank() && imageVectorCode.isNotBlank()) {
-                Spacer(modifier = Modifier.height(12.dp))
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .verticalScroll(rememberScrollState()),
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .weight(1F)
-                            .wrapContentWidth(Alignment.End),
-                        text = pathDecomposed,
-                        lineHeight = 32.sp,
-                        color = White,
-                    )
-                }
-            }
         }
         if (showIconNameDialog) {
             IconNameDialog(
