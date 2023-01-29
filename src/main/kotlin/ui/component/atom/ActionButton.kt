@@ -22,7 +22,7 @@ fun ActionButton(
     text = text,
     modifier = Modifier
         .clip(RoundedCornerShape(10.dp))
-        .background(if (selected) BaseColor.Blue02.toColor(isDark) else BaseColor.Secondary.toColor(isDark))
+        .background(if (selected) BaseColor.Blue01.toColor(isDark) else BaseColor.Secondary.toColor(isDark))
         .selectable(
             selected = selected,
             onClick = onClick

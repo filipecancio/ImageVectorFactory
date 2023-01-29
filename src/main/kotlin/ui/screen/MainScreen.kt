@@ -11,8 +11,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.intl.Locale
-import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import domain.SvgPathParser
@@ -89,13 +87,15 @@ fun MainScreen() {
                 )
                 */
             }
-            Row {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalAlignment = Alignment.End
-                ){
+                ) {
                     Text(
-                        when(currentTabIndex){
+                        when (currentTabIndex) {
                             0 -> "Insert Drawable path here:"
                             else -> "Insert SVG path here:"
                         },
@@ -103,7 +103,7 @@ fun MainScreen() {
                         style = getBaseType(showImageBlackBackground).body1
                     )
                     CodeEdit(
-                        value = when(currentTabIndex){
+                        value = when (currentTabIndex) {
                             0 -> vectorDrawableTextFieldValue
                             else -> svgPathTextFieldValue
                         },
@@ -130,6 +130,21 @@ fun MainScreen() {
                         }
                     )
                 }
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalAlignment = Alignment.End
+                ) {
+                    Text(
+                        "The Image Vector code:",
+                        modifier = Modifier.width(300.dp),
+                        style = getBaseType(showImageBlackBackground).body2
+                    )
+                    ActionButton(
+                        text = "Copy",
+                        onClick = { showIconNameDialog = true },
+                        selected = true
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(12.dp))
             Divider()
@@ -137,12 +152,6 @@ fun MainScreen() {
                 Spacer(modifier = Modifier.height(12.dp))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                     Spacer(modifier = Modifier.weight(1F))
-                    Button(
-                        modifier = Modifier.weight(1F).wrapContentWidth(),
-                        onClick = { showIconNameDialog = true },
-                    ) {
-                        Text(text = "Copy code".toUpperCase(Locale.current))
-                    }
                     Row(
                         modifier = Modifier.weight(1F),
                         horizontalArrangement = Arrangement.Start,
