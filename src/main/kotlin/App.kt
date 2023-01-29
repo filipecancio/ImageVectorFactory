@@ -4,6 +4,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import ui.screen.MainController
 
 @ExperimentalMaterialApi
 fun main() = application {
@@ -14,6 +15,7 @@ fun main() = application {
         state = windowState,
         onCloseRequest = ::exitApplication,
     ) {
-        MainScreen()
+        val controller = MainController()
+        MainScreen(controller)
     }
 }
