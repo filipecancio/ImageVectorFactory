@@ -55,15 +55,20 @@ class MainController(
         imageVectorCode = path
     }
 
-    fun buildSvgData(
-        currentTabIndex: Int,
-        onColorsNotFound: (colorValues: Set<String>) -> Unit,
-    ): SvgData? = if (currentTabIndex == 0 && textFieldValue.text.isNotBlank()) {
-        VectorDrawableParser.toSvgData(textFieldValue.text, onColorsNotFound)
+    fun buildSvgData(): SvgData? = if (currentTabIndex == 0 && textFieldValue.text.isNotBlank()) {
+        VectorDrawableParser.toSvgData(textFieldValue.text) { unknownColors = it }
     } else if (currentTabIndex == 1 && textFieldValue.text.isNotBlank()) {
         SvgPathParser.toSvgData(svgPath = textFieldValue.text)
     } else {
         null
+    }
+
+    fun updateImageVectorCode(svgData: SvgData){
+        imageVectorCode = when (currentTabIndex) {
+            0 -> svgData.toImageVectorCode()
+            else -> svgData.toImageVectorCode()
+        }
+        imageVector = svgData.toImageVector()
     }
 
     enum class ConvertOptions(

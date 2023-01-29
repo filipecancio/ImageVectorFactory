@@ -66,16 +66,9 @@ fun MainScreen() {
                     ActionButton(
                         text = "Convert",
                         onClick = {
-                            val svgData = controller.buildSvgData(
-                                currentTabIndex = controller.currentTabIndex,
-                                onColorsNotFound = { controller.unknownColors = it },
-                            ) ?: return@ActionButton
+                            val svgData = controller.buildSvgData() ?: return@ActionButton
 
-                            controller.imageVectorCode = when (controller.currentTabIndex) {
-                                0 -> svgData.toImageVectorCode()
-                                else -> svgData.toImageVectorCode()
-                            }
-                            controller.imageVector = svgData.toImageVector()
+                            controller.updateImageVectorCode(svgData)
                         },
                         isDark = controller.isDark
                     )
@@ -119,10 +112,7 @@ fun MainScreen() {
                     controller.unknownColors = emptySet()
 
                     if (validColors.isNotEmpty()) {
-                        val svgData = controller.buildSvgData(
-                            currentTabIndex = controller.currentTabIndex,
-                            onColorsNotFound = { controller.unknownColors = it },
-                        ) ?: return@AskForValidColorDialog
+                        val svgData = controller.buildSvgData() ?: return@AskForValidColorDialog
 
                         controller.pathDecomposed = svgData.toPathDecomposed()
                         controller.imageVectorCode = svgData.toImageVectorCode(controller.iconName.text)
