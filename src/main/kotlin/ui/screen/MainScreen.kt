@@ -62,7 +62,8 @@ fun MainScreen() {
                         imageVectorCode = ""
                         imageVector = null
                         currentTabIndex = 0
-                    }
+                    },
+                    isDark = showImageBlackBackground
                 )
                 TabButton(
                     text = "SVG Path",
@@ -73,7 +74,8 @@ fun MainScreen() {
                         imageVectorCode = ""
                         imageVector = null
                         currentTabIndex = 1
-                    }
+                    },
+                    isDark = showImageBlackBackground
                 )
                 /*
                 TabButton(
@@ -115,6 +117,7 @@ fun MainScreen() {
                                 else -> svgPathTextFieldValue = it
                             }
                         },
+                        isDark = showImageBlackBackground
                     )
                     ActionButton(
                         text = "Convert",
@@ -129,7 +132,8 @@ fun MainScreen() {
                             pathDecomposed = svgData.toPathDecomposed()
                             imageVectorCode = svgData.toImageVectorCode()
                             imageVector = svgData.toImageVector()
-                        }
+                        },
+                        isDark = showImageBlackBackground
                     )
                 }
                 Column(
@@ -141,12 +145,19 @@ fun MainScreen() {
                         modifier = Modifier.width(300.dp),
                         style = getBaseType(showImageBlackBackground).body2
                     )
+                    CodeEdit(
+                        value = TextFieldValue(imageVectorCode),
+                        selected = true,
+                        onValueChange = { },
+                        isDark = showImageBlackBackground
+                    )
                     ActionBar(
                         buttonText = "Copy",
                         onClick = { showIconNameDialog = true },
                         selected = true,
                         value = iconName,
-                        onValueChange = { iconName = it }
+                        onValueChange = { iconName = it },
+                        isDark = showImageBlackBackground
                     )
                 }
             }
@@ -199,7 +210,6 @@ fun MainScreen() {
                         color = White,
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = imageVectorCode, lineHeight = 32.sp, color = White)
                     imageVector?.let {
                         Spacer(modifier = Modifier.width(4.dp))
                         Column(modifier = Modifier.weight(1F)) {

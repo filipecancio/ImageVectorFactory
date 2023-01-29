@@ -28,7 +28,8 @@ fun ActionBar(
     CodeEdit(
         value = value,
         onValueChange = onValueChange,
-        modifier = defaultModifier(isDark)
+        modifier = defaultModifier(isDark),
+        isDark = isDark
     )
     ActionButton(
         text = buttonText,

@@ -19,8 +19,9 @@ fun CodeEdit(
     value: TextFieldValue = TextFieldValue("Example"),
     onValueChange: (TextFieldValue) -> Unit,
     isDark: Boolean = false,
-    textStyle: TextStyle =  getBaseType(isDark).body1,
-    modifier: Modifier = defaultModifier(isDark)
+    selected: Boolean = false,
+    textStyle: TextStyle = if(selected){ getBaseType(isDark).body2 }else{getBaseType(isDark).body1},
+    modifier: Modifier = defaultModifier(isDark,selected)
 ) = BasicTextField(
     value = value,
     onValueChange = onValueChange,
@@ -28,11 +29,11 @@ fun CodeEdit(
     textStyle = textStyle
 )
 
-private fun defaultModifier(isDark: Boolean) = Modifier
+private fun defaultModifier(isDark: Boolean,selected: Boolean = false) = Modifier
     .size(
         width = 300.dp,
         height = 100.dp
     )
     .clip(RoundedCornerShape(10.dp))
-    .background(BaseColor.Secondary.toColor(isDark))
+    .background(if(selected){ BaseColor.Blue01.toColor(isDark) }else{ BaseColor.Secondary.toColor(isDark) })
     .padding(16.dp)
