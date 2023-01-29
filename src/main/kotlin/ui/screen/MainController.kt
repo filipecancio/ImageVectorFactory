@@ -19,16 +19,16 @@ class MainController(
     var currentTabIndex by mutableStateOf(0)
     var textFieldValue by mutableStateOf(TextFieldValue(""))
     var imageVectorCode by mutableStateOf("")
-    var showIconNameDialog by mutableStateOf(false)
     var pathDecomposed by mutableStateOf("")
     var imageVector by mutableStateOf<ImageVector?>(null)
     var unknownColors by mutableStateOf(emptySet<String>())
-    var iconName by mutableStateOf(TextFieldValue("Untitled"))
+    var iconName by mutableStateOf(TextFieldValue("untitled"))
 
     val convertOptions = listOf(
         ConvertOptions.DrawablePath,
         ConvertOptions.SvgPath
     )
+
     fun clearValues(index: Int) {
         pathDecomposed = ""
         imageVectorCode = ""
@@ -38,16 +38,21 @@ class MainController(
 
     fun getCurrentPlaceholder() = convertOptions[currentTabIndex].placeholder
 
-    fun copyImageVector(name: String) {
+    fun copyImageVector() {
+        clipboardManager.setText(AnnotatedString(imageVectorCode))
+    }
+
+    fun replaceCodeName(newName: TextFieldValue) {
+        val oldName = iconName
+        iconName = newName
         val path = imageVectorCode.replace(
-            "[IconName]",
-            "${name.firstOrNull()?.uppercase()}${name.substring(1)}",
+            "${oldName.text.firstOrNull()?.uppercase()}${oldName.text.substring(1)}",
+            "${iconName.text.firstOrNull()?.uppercase()}${iconName.text.substring(1)}",
         ).replace(
-            "[iconName]",
-            "${name.firstOrNull()?.lowercase()}${name.substring(1)}",
+            "${oldName.text.firstOrNull()?.lowercase()}${oldName.text.substring(1)}",
+            "${iconName.text.firstOrNull()?.lowercase()}${iconName.text.substring(1)}",
         )
-        showIconNameDialog = false
-        clipboardManager.setText(AnnotatedString(path))
+        imageVectorCode = path
     }
 
     fun buildSvgData(

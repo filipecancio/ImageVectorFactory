@@ -13,7 +13,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import domain.UnknownColors
 import ui.component.AskForValidColorDialog
-import ui.component.IconNameDialog
 import ui.component.atom.ActionButton
 import ui.component.atom.CodeEdit
 import ui.component.atom.TabButton
@@ -98,10 +97,10 @@ fun MainScreen() {
                     )
                     ActionBar(
                         buttonText = "Copy",
-                        onClick = { controller.showIconNameDialog = true },
+                        onClick = { controller.copyImageVector() },
                         selected = true,
                         value = controller.iconName,
-                        onValueChange = { controller.iconName = it },
+                        onValueChange = { controller.replaceCodeName(it) },
                         isDark = controller.isDark
                     )
                 }
@@ -112,12 +111,7 @@ fun MainScreen() {
                 onDarkClick = { controller.isDark = !controller.isDark }
             )
         }
-        if (controller.showIconNameDialog) {
-            IconNameDialog(
-                onValidateClick = { controller.copyImageVector(it) },
-                onCancelClick = { controller.showIconNameDialog = false },
-            )
-        } else if (controller.unknownColors.isNotEmpty()) {
+        if (controller.unknownColors.isNotEmpty()) {
             AskForValidColorDialog(
                 colorsValue = controller.unknownColors,
                 onUnknownColorsMapped = { validColors ->
@@ -131,7 +125,7 @@ fun MainScreen() {
                         ) ?: return@AskForValidColorDialog
 
                         controller.pathDecomposed = svgData.toPathDecomposed()
-                        controller.imageVectorCode = svgData.toImageVectorCode()
+                        controller.imageVectorCode = svgData.toImageVectorCode(controller.iconName.text)
                         controller.imageVector = svgData.toImageVector()
                     }
                 },

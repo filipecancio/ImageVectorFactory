@@ -61,6 +61,7 @@ data class SvgData(
                         val y = values.getOrNull(1) ?: return@loop
                         pathDecomposed += "\n$type${x},${y}"
                     }
+
                     'L', 'l' -> {
                         if (values.size % 2 == 0) {
                             var i = 0
@@ -72,14 +73,17 @@ data class SvgData(
                             }
                         }
                     }
+
                     'H', 'h' -> {
                         val x = values.getOrNull(0) ?: return@loop
                         pathDecomposed += "\n$type${x}"
                     }
+
                     'V', 'v' -> {
                         val y = values.getOrNull(0) ?: return@loop
                         pathDecomposed += "\n$type${y}"
                     }
+
                     'C', 'c' -> {
                         if (values.size % 6 == 0) {
                             var i = 0
@@ -96,6 +100,7 @@ data class SvgData(
                             }
                         }
                     }
+
                     'S', 's' -> {
                         if (values.size % 4 == 0) {
                             var i = 0
@@ -109,6 +114,7 @@ data class SvgData(
                             }
                         }
                     }
+
                     'Q', 'q' -> {
                         if (values.size % 4 == 0) {
                             var i = 0
@@ -122,6 +128,7 @@ data class SvgData(
                             }
                         }
                     }
+
                     'T', 't' -> {
                         if (values.size % 2 == 0) {
                             var i = 0
@@ -133,6 +140,7 @@ data class SvgData(
                             }
                         }
                     }
+
                     'A', 'a' -> {
                         if (values.size % 7 == 0) {
                             var i = 0
@@ -150,6 +158,7 @@ data class SvgData(
                             }
                         }
                     }
+
                     'Z', 'z' -> {
                         pathDecomposed += "\n$type"
                     }
@@ -160,22 +169,24 @@ data class SvgData(
         return pathDecomposed
     }
 
-    fun toImageVectorCode(): String {
+    fun toImageVectorCode(name: String = "Untitled"): String {
+        val upperName = "${name.firstOrNull()?.uppercase()}${name.substring(1)}"
+        val lowerName = "${name.firstOrNull()?.lowercase()}${name.substring(1)}"
         var imageVectorCode = if (isMaterialIcon) {
-            "val Icons.[IconName]: ImageVector\n" +
+            "val Icons.${upperName}: ImageVector\n" +
                     "    get() {\n" +
-                    "        if (_[iconName] != null) {\n" +
-                    "            return _[iconName]!!\n" +
+                    "        if (_${lowerName} != null) {\n" +
+                    "            return _${lowerName}!!\n" +
                     "        }\n" +
-                    "        _[iconName] = materialIcon(name = \"[IconName]\") {"
+                    "        _${lowerName} = materialIcon(name = \"${upperName}\") {"
         } else {
-            "val Icons.[IconName]: ImageVector\n" +
+            "val Icons.${upperName}: ImageVector\n" +
                     "    get() {\n" +
-                    "        if (_[iconName] != null) {\n" +
-                    "            return _[iconName]!!\n" +
+                    "        if (_${lowerName} != null) {\n" +
+                    "            return _${lowerName}!!\n" +
                     "        }\n" +
-                    "        _[iconName] = ImageVector.Builder(\n" +
-                    "            name = \"[IconName]\",\n" +
+                    "        _${lowerName} = ImageVector.Builder(\n" +
+                    "            name = \"${upperName}\",\n" +
                     "            defaultWidth = ${width},\n" +
                     "            defaultHeight = ${height},\n" +
                     "            viewportWidth = ${viewportWidth}F,\n" +
@@ -239,11 +250,13 @@ data class SvgData(
                         val y = values.getOrNull(1) ?: return@loop
                         imageVectorCode += "\n              moveTo(${x}F, ${y}F)"
                     }
+
                     'm' -> {
                         val x = values.getOrNull(0) ?: return@loop
                         val y = values.getOrNull(1) ?: return@loop
                         imageVectorCode += "\n              moveToRelative(${x}F, ${y}F)"
                     }
+
                     'L' -> {
                         if (values.size % 2 == 0) {
                             var i = 0
@@ -255,6 +268,7 @@ data class SvgData(
                             }
                         }
                     }
+
                     'l' -> {
                         if (values.size % 2 == 0) {
                             var i = 0
@@ -266,22 +280,27 @@ data class SvgData(
                             }
                         }
                     }
+
                     'H' -> {
                         val x = values.getOrNull(0) ?: return@loop
                         imageVectorCode += "\n              horizontalLineTo(${x}F)"
                     }
+
                     'h' -> {
                         val x = values.getOrNull(0) ?: return@loop
                         imageVectorCode += "\n              horizontalLineToRelative(${x}F)"
                     }
+
                     'V' -> {
                         val y = values.getOrNull(0) ?: return@loop
                         imageVectorCode += "\n              verticalLineTo(${y}F)"
                     }
+
                     'v' -> {
                         val y = values.getOrNull(0) ?: return@loop
                         imageVectorCode += "\n              verticalLineToRelative(${y}F)"
                     }
+
                     'C' -> {
                         if (values.size % 6 == 0) {
                             var i = 0
@@ -297,6 +316,7 @@ data class SvgData(
                             }
                         }
                     }
+
                     'c' -> {
                         if (values.size % 6 == 0) {
                             var i = 0
@@ -312,6 +332,7 @@ data class SvgData(
                             }
                         }
                     }
+
                     'S' -> {
                         if (values.size % 4 == 0) {
                             var i = 0
@@ -325,6 +346,7 @@ data class SvgData(
                             }
                         }
                     }
+
                     's' -> {
                         if (values.size % 4 == 0) {
                             var i = 0
@@ -338,6 +360,7 @@ data class SvgData(
                             }
                         }
                     }
+
                     'Q' -> {
                         if (values.size % 4 == 0) {
                             var i = 0
@@ -351,6 +374,7 @@ data class SvgData(
                             }
                         }
                     }
+
                     'q' -> {
                         if (values.size % 4 == 0) {
                             var i = 0
@@ -364,6 +388,7 @@ data class SvgData(
                             }
                         }
                     }
+
                     'T' -> {
                         if (values.size % 2 == 0) {
                             var i = 0
@@ -375,6 +400,7 @@ data class SvgData(
                             }
                         }
                     }
+
                     't' -> {
                         if (values.size % 2 == 0) {
                             var i = 0
@@ -386,6 +412,7 @@ data class SvgData(
                             }
                         }
                     }
+
                     'A' -> {
                         if (values.size % 7 == 0) {
                             var i = 0
@@ -402,6 +429,7 @@ data class SvgData(
                             }
                         }
                     }
+
                     'a' -> {
                         if (values.size % 7 == 0) {
                             var i = 0
@@ -418,6 +446,7 @@ data class SvgData(
                             }
                         }
                     }
+
                     'Z', 'z' -> {
                         if (index < path.path.lastIndex) {
                             imageVectorCode += "\n"
@@ -436,28 +465,28 @@ data class SvgData(
         imageVectorCode += if (isMaterialIcon) {
             "\n" +
                     "        }\n" +
-                    "        return _[iconName]!!\n" +
+                    "        return _${lowerName}!!\n" +
                     "    }\n" +
                     "\n" +
-                    "private var _[iconName]: ImageVector? = null\n" +
+                    "private var _${lowerName}: ImageVector? = null\n" +
                     "\n" +
                     "@Preview\n" +
                     "@Composable\n" +
                     "@Suppress(\"UnusedPrivateMember\")\n" +
-                    "private fun Icon[IconName]Preview() {\n" +
-                    "    Image(imageVector = Icons.[IconName], contentDescription = null)\n" +
+                    "private fun Icon${upperName}Preview() {\n" +
+                    "    Image(imageVector = Icons.${upperName}, contentDescription = null)\n" +
                     "}"
         } else {
             ".build()\n" +
-                    "        return _[iconName]!!\n" +
+                    "        return _${lowerName}!!\n" +
                     "    }\n" +
-                    "private var _[iconName]: ImageVector? = null\n" +
+                    "private var _${lowerName}: ImageVector? = null\n" +
                     "\n" +
                     "@Preview\n" +
                     "@Composable\n" +
                     "@Suppress(\"UnusedPrivateMember\")\n" +
-                    "private fun Icon[IconName]Preview() {\n" +
-                    "    Image(imageVector = Icons.[IconName], contentDescription = null)\n" +
+                    "private fun Icon${upperName}Preview() {\n" +
+                    "    Image(imageVector = Icons.${upperName}, contentDescription = null)\n" +
                     "}"
         }
         return imageVectorCode
@@ -496,11 +525,13 @@ data class SvgData(
                     val y = values.getOrNull(1) ?: return@forEach
                     moveTo(x, y)
                 }
+
                 'm' -> {
                     val x = values.getOrNull(0) ?: return@forEach
                     val y = values.getOrNull(1) ?: return@forEach
                     moveToRelative(x, y)
                 }
+
                 'L' -> {
                     if (values.size % 2 == 0) {
                         var i = 0
@@ -512,6 +543,7 @@ data class SvgData(
                         }
                     }
                 }
+
                 'l' -> {
                     if (values.size % 2 == 0) {
                         var i = 0
@@ -523,22 +555,27 @@ data class SvgData(
                         }
                     }
                 }
+
                 'H' -> {
                     val x = values.getOrNull(0) ?: return@forEach
                     horizontalLineTo(x)
                 }
+
                 'h' -> {
                     val x = values.getOrNull(0) ?: return@forEach
                     horizontalLineToRelative(x)
                 }
+
                 'V' -> {
                     val y = values.getOrNull(0) ?: return@forEach
                     verticalLineTo(y)
                 }
+
                 'v' -> {
                     val y = values.getOrNull(0) ?: return@forEach
                     verticalLineToRelative(y)
                 }
+
                 'C' -> {
                     if (values.size % 6 == 0) {
                         var i = 0
@@ -554,6 +591,7 @@ data class SvgData(
                         }
                     }
                 }
+
                 'c' -> {
                     if (values.size % 6 == 0) {
                         var i = 0
@@ -569,6 +607,7 @@ data class SvgData(
                         }
                     }
                 }
+
                 'S' -> {
                     if (values.size % 4 == 0) {
                         var i = 0
@@ -582,6 +621,7 @@ data class SvgData(
                         }
                     }
                 }
+
                 's' -> {
                     if (values.size % 4 == 0) {
                         var i = 0
@@ -595,6 +635,7 @@ data class SvgData(
                         }
                     }
                 }
+
                 'Q' -> {
                     if (values.size % 4 == 0) {
                         var i = 0
@@ -608,6 +649,7 @@ data class SvgData(
                         }
                     }
                 }
+
                 'q' -> {
                     if (values.size % 4 == 0) {
                         var i = 0
@@ -621,6 +663,7 @@ data class SvgData(
                         }
                     }
                 }
+
                 'T' -> {
                     if (values.size % 2 == 0) {
                         var i = 0
@@ -632,6 +675,7 @@ data class SvgData(
                         }
                     }
                 }
+
                 't' -> {
                     if (values.size % 2 == 0) {
                         var i = 0
@@ -643,6 +687,7 @@ data class SvgData(
                         }
                     }
                 }
+
                 'A' -> {
                     if (values.size % 7 == 0) {
                         var i = 0
@@ -659,6 +704,7 @@ data class SvgData(
                         }
                     }
                 }
+
                 'a' -> {
                     if (values.size % 7 == 0) {
                         var i = 0
