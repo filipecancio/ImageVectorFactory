@@ -21,9 +21,11 @@ import domain.VectorDrawableParser
 import model.SvgData
 import ui.component.AskForValidColorDialog
 import ui.component.IconNameDialog
+import ui.component.atom.ActionButton
 import ui.component.atom.CodeEdit
 import ui.component.atom.TabButton
 import ui.component.molecule.TopBar
+import ui.theme.BaseColor
 import ui.theme.BaseVector
 import ui.theme.getBaseType
 
@@ -46,8 +48,9 @@ fun MainScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.background),
+                .background(BaseColor.Primary.toColor(showImageBlackBackground)),
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             TopBar(showImageBlackBackground) {
                 TabButton(
@@ -86,7 +89,6 @@ fun MainScreen() {
                 )
                 */
             }
-            Spacer(modifier = Modifier.height(16.dp))
             Row {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -112,26 +114,22 @@ fun MainScreen() {
                             }
                         },
                     )
-                }
-            }
-            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Button(
-                    onClick = {
-                        val svgData = buildSvgData(
-                            currentTabIndex = currentTabIndex,
-                            vectorDrawableValue = vectorDrawableTextFieldValue.text,
-                            svgPathValue = svgPathTextFieldValue.text,
-                            onColorsNotFound = { unknownColors = it },
-                        ) ?: return@Button
+                    ActionButton(
+                        text = "Convert",
+                        onClick = {
+                            val svgData = buildSvgData(
+                                currentTabIndex = currentTabIndex,
+                                vectorDrawableValue = vectorDrawableTextFieldValue.text,
+                                svgPathValue = svgPathTextFieldValue.text,
+                                onColorsNotFound = { unknownColors = it },
+                            ) ?: return@ActionButton
 
-                        pathDecomposed = svgData.toPathDecomposed()
-                        imageVectorCode = svgData.toImageVectorCode()
-                        imageVector = svgData.toImageVector()
-                    },
-                ) {
-                    Text(text = "Convert".toUpperCase(Locale.current))
+                            pathDecomposed = svgData.toPathDecomposed()
+                            imageVectorCode = svgData.toImageVectorCode()
+                            imageVector = svgData.toImageVector()
+                        }
+                    )
                 }
-                Spacer(modifier = Modifier.width(16.dp))
             }
             Spacer(modifier = Modifier.height(12.dp))
             Divider()
