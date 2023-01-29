@@ -60,7 +60,7 @@ fun MainScreen() {
                     }
                 )
                 TabButton(
-                    text = "SVG File",
+                    text = "SVG Path",
                     baseVector = BaseVector.FileSvg,
                     isEnabled = currentTabIndex == 1,
                     onClick = {
@@ -70,28 +70,20 @@ fun MainScreen() {
                         currentTabIndex = 1
                     }
                 )
+                /*
+                TabButton(
+                    text = "SVG File",
+                    baseVector = BaseVector.FileSvg,
+                    isEnabled = currentTabIndex == 2,
+                    onClick = {
+                        pathDecomposed = ""
+                        imageVectorCode = ""
+                        imageVector = null
+                        currentTabIndex = 2
+                    }
+                )
+                */
             }
-            //TabRow(selectedTabIndex = currentTabIndex) {
-//                Tab(
-//                    selected = currentTabIndex == 0,
-//                    onClick = {
-//                        pathDecomposed = ""
-//                        pathConverted = ""
-//                        imageVector = null
-//                        currentTabIndex = 0
-//                    },
-//                    text = { Text(text = "SVG file") },
-//                )
-            //Tab(
-            //    selected = currentTabIndex == 0,
-            //    text = { Text(text = "Vector Drawable file") },
-            //)
-            //Tab(
-            //     selected = currentTabIndex == 1,
-            //
-            //    text = { Text(text = "SVG path") },
-            // )
-            //}
             Spacer(modifier = Modifier.height(16.dp))
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 when (currentTabIndex) {
