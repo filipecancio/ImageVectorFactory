@@ -26,9 +26,10 @@ import ui.theme.getBaseType
 
 @ExperimentalMaterialApi
 @Composable
-fun MainScreen(controller: MainController) {
+fun MainScreen() {
+    val clipboardManager = LocalClipboardManager.current
+    val controller = MainController(clipboardManager)
     MaterialTheme {
-        val clipboardManager = LocalClipboardManager.current
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -61,19 +62,6 @@ fun MainScreen(controller: MainController) {
                     },
                     isDark = controller.isDark
                 )
-                /*
-                TabButton(
-                    text = "SVG File",
-                    baseVector = BaseVector.FileSvg,
-                    isEnabled = controller.currentTabIndex == 2,
-                    onClick = {
-                        controller.pathDecomposed = ""
-                        controller.imageVectorCode = ""
-                        controller.imageVector = null
-                        controller.currentTabIndex = 2
-                    }
-                )
-                */
             }
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -155,9 +143,7 @@ fun MainScreen(controller: MainController) {
         }
         if (controller.showIconNameDialog) {
             IconNameDialog(
-                onValidateClick = {
-                    clipboardManager.setText(controller.copyImageVector(it))
-                },
+                onValidateClick = { controller.copyImageVector(it) },
                 onCancelClick = { controller.showIconNameDialog = false },
             )
         } else if (controller.unknownColors.isNotEmpty()) {

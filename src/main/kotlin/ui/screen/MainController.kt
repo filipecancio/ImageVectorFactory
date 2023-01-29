@@ -4,13 +4,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
 import domain.SvgPathParser
 import domain.VectorDrawableParser
 import model.SvgData
 
-class MainController {
+class MainController(
+    private val clipboardManager: ClipboardManager
+) {
     var isDark by mutableStateOf(false)
     var currentTabIndex by mutableStateOf(0)
     var imageVectorCode by mutableStateOf("")
@@ -22,7 +25,7 @@ class MainController {
     var unknownColors by mutableStateOf(emptySet<String>())
     var iconName by mutableStateOf(TextFieldValue("Untitled"))
 
-    fun copyImageVector(name: String): AnnotatedString {
+    fun copyImageVector(name: String) {
         val path = imageVectorCode.replace(
             "[IconName]",
             "${name.firstOrNull()?.uppercase()}${name.substring(1)}",
@@ -31,7 +34,7 @@ class MainController {
             "${name.firstOrNull()?.lowercase()}${name.substring(1)}",
         )
         showIconNameDialog = false
-        return AnnotatedString(path)
+        clipboardManager.setText(AnnotatedString(path))
     }
 
     fun buildSvgData(
