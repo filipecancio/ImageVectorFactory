@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
 import domain.SvgPathParser
+import domain.UnknownColors
 import domain.VectorDrawableParser
 import model.SvgData
 import ui.theme.BaseVector
@@ -63,11 +64,29 @@ class MainController(
         null
     }
 
-    fun updateImageVectorCode(svgData: SvgData){
+    fun updateImageVectorCode(){
+        val svgData = buildSvgData() ?: return
+
         imageVectorCode = when (currentTabIndex) {
             0 -> svgData.toImageVectorCode()
             else -> svgData.toImageVectorCode()
         }
+        imageVector = svgData.toImageVector()
+    }
+
+    fun fixUnknownColors(validColors: Map<String, String>) {
+        UnknownColors.unknownColors.putAll(validColors)
+        unknownColors = emptySet()
+
+        if (validColors.isNotEmpty()) {
+            updateSvgCode()
+        }
+    }
+    fun updateSvgCode(){
+        val svgData = buildSvgData() ?: return
+
+        pathDecomposed = svgData.toPathDecomposed()
+        imageVectorCode = svgData.toImageVectorCode(iconName.text)
         imageVector = svgData.toImageVector()
     }
 

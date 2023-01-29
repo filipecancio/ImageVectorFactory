@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import domain.UnknownColors
 import ui.component.AskForValidColorDialog
 import ui.component.atom.ActionButton
 import ui.component.atom.CodeEdit
@@ -65,11 +64,7 @@ fun MainScreen() {
                     )
                     ActionButton(
                         text = "Convert",
-                        onClick = {
-                            val svgData = controller.buildSvgData() ?: return@ActionButton
-
-                            controller.updateImageVectorCode(svgData)
-                        },
+                        onClick = { controller.updateImageVectorCode() },
                         isDark = controller.isDark
                     )
                 }
@@ -107,18 +102,7 @@ fun MainScreen() {
         if (controller.unknownColors.isNotEmpty()) {
             AskForValidColorDialog(
                 colorsValue = controller.unknownColors,
-                onUnknownColorsMapped = { validColors ->
-                    UnknownColors.unknownColors.putAll(validColors)
-                    controller.unknownColors = emptySet()
-
-                    if (validColors.isNotEmpty()) {
-                        val svgData = controller.buildSvgData() ?: return@AskForValidColorDialog
-
-                        controller.pathDecomposed = svgData.toPathDecomposed()
-                        controller.imageVectorCode = svgData.toImageVectorCode(controller.iconName.text)
-                        controller.imageVector = svgData.toImageVector()
-                    }
-                },
+                onUnknownColorsMapped = { controller.fixUnknownColors(it) },
             )
         }
     }
