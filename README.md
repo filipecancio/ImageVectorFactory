@@ -21,6 +21,7 @@ For now, we don't have a .deb or .exe version
 - You can now copy the ImageVector code!
 - And paste it in your project.
 
+![Svg2Compose_2023-01-30_00-59-23_AdobeExpress](https://user-images.githubusercontent.com/13178261/215385031-f23765ec-ab9d-4ad7-a682-b7f087e739b5.gif)
 
 
 ## How to transform a SVG Path
@@ -29,11 +30,6 @@ For now, we don't have a .deb or .exe version
 - Enter your SVG path
 ![alt text](https://github.com/DenisMondon/Svg2Compose/blob/master/images/svg_path_textfield.png)
 - Click **CONVERT**
-- Here you go! You can see 3 columns:
-  - left=All paths
-  - middle=The ImageVector
-  - right=The Image
-![alt text](https://github.com/DenisMondon/Svg2Compose/blob/master/images/three_columns.png)
 - You can now copy the ImageVector code!
 - And paste it in your project.
 
