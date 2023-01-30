@@ -85,7 +85,7 @@ class HomeController(
         }
     }
 
-    fun updateTextField(){
+    private fun updateTextField(){
         var textField = textFieldValue.text
             UnknownColors.unknownColors.forEach{ oldColor ->
                 textField = textField.replace(oldColor.key,oldColor.value)
