@@ -1,8 +1,9 @@
-# Svg2Compose
+# ![Group 9](https://user-images.githubusercontent.com/13178261/215382725-6b68fd1b-20c6-46f7-89f8-7bb3d811d739.png)
 Transforms a Vector Drawable or a SVG path to a Compose ImageVector.
+[![shield](https://img.shields.io/badge/figma-project-red)](https://www.figma.com/community/file/1201356198073143341)
 
 ## Download
-Download the latest version (Windows) here: [Releases](https://github.com/DenisMondon/Svg2Compose/releases).
+This project is a fork based on [SVG2Compose](https://github.com/DenisMondon/Svg2Compose/releases).
 
 ## How to transform a Vector Drawable
 
