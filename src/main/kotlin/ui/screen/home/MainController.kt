@@ -1,4 +1,4 @@
-package ui.screen
+package ui.screen.home
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

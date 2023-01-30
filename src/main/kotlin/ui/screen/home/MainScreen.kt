@@ -1,4 +1,4 @@
-package ui.screen
+package ui.screen.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -18,6 +18,7 @@ import ui.component.atom.TabButton
 import ui.component.molecule.ActionBar
 import ui.component.molecule.ImageView
 import ui.component.molecule.TopBar
+import ui.screen.invalid.AskForValidColorDialog
 import ui.theme.BaseColor
 import ui.theme.getBaseType
 

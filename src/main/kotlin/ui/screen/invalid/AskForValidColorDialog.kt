@@ -1,4 +1,4 @@
-package ui.screen
+package ui.screen.invalid
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
