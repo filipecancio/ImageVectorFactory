@@ -54,6 +54,7 @@ class HomeController(
     }
 
     fun generateSvgData() {
+        svgData = null
         svgData = buildSvgData() ?: return
         updateImageVectorCode()
     }
@@ -75,12 +76,21 @@ class HomeController(
 
     fun fixUnknownColors(validColors: Map<String, String>) {
         UnknownColors.unknownColors.putAll(validColors)
+        updateTextField()
         unknownColors = emptySet()
         blur = 0F
 
         if (validColors.isNotEmpty()) {
             updateSvgCode()
         }
+    }
+
+    fun updateTextField(){
+        var textField = textFieldValue.text
+            UnknownColors.unknownColors.forEach{ oldColor ->
+                textField = textField.replace(oldColor.key,oldColor.value)
+        }
+        textFieldValue = TextFieldValue(textField)
     }
 
     private fun updateSvgCode() {
