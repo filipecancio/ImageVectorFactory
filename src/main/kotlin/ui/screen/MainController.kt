@@ -25,6 +25,7 @@ class MainController(
     var imageVector by mutableStateOf<ImageVector?>(null)
     var unknownColors by mutableStateOf(emptySet<String>())
     var iconName by mutableStateOf(TextFieldValue("untitled"))
+    var blur by mutableStateOf(0.0F)
 
     val convertOptions = listOf(
         ConvertOptions.DrawablePath,
@@ -59,7 +60,9 @@ class MainController(
 
     fun replaceImageVectorCode(newName: TextFieldValue) {
         iconName = newName
-        updateImageVectorCode()
+        if(svgData != null){
+            updateImageVectorCode()
+        }
     }
 
     private fun updateImageVectorCode() {
@@ -73,6 +76,7 @@ class MainController(
     fun fixUnknownColors(validColors: Map<String, String>) {
         UnknownColors.unknownColors.putAll(validColors)
         unknownColors = emptySet()
+        blur = 0F
 
         if (validColors.isNotEmpty()) {
             updateSvgCode()

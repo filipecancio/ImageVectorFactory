@@ -8,10 +8,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import ui.component.AskForValidColorDialog
 import ui.component.atom.ActionButton
 import ui.component.atom.CodeEdit
 import ui.component.atom.TabButton
@@ -30,7 +30,8 @@ fun MainScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BaseColor.Primary.toColor(controller.isDark)),
+                .background(BaseColor.Primary.toColor(controller.isDark))
+                .blur((controller.blur).dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
@@ -100,7 +101,9 @@ fun MainScreen() {
             )
         }
         if (controller.unknownColors.isNotEmpty()) {
+            controller.blur = 10F
             AskForValidColorDialog(
+                isDark = controller.isDark,
                 colorsValue = controller.unknownColors,
                 onUnknownColorsMapped = { controller.fixUnknownColors(it) },
             )
