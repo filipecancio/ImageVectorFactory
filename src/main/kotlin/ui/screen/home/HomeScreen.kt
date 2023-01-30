@@ -18,15 +18,15 @@ import ui.component.atom.TabButton
 import ui.component.molecule.ActionBar
 import ui.component.molecule.ImageView
 import ui.component.molecule.TopBar
-import ui.screen.invalid.AskForValidColorDialog
+import ui.screen.invalid.InvalidScreen
 import ui.theme.BaseColor
 import ui.theme.getBaseType
 
 @ExperimentalMaterialApi
 @Composable
-fun MainScreen() {
+fun HomeScreen() {
     val clipboardManager = LocalClipboardManager.current
-    val controller = MainController(clipboardManager)
+    val controller = HomeController(clipboardManager)
     MaterialTheme {
         Column(
             modifier = Modifier
@@ -103,7 +103,7 @@ fun MainScreen() {
         }
         if (controller.unknownColors.isNotEmpty()) {
             controller.blur = 10F
-            AskForValidColorDialog(
+            InvalidScreen(
                 isDark = controller.isDark,
                 colorsValue = controller.unknownColors,
                 onUnknownColorsMapped = { controller.fixUnknownColors(it) },

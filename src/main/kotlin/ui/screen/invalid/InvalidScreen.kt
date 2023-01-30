@@ -20,7 +20,7 @@ val validColorValues = mutableMapOf<String, String>()
 
 @ExperimentalMaterialApi
 @Composable
-fun AskForValidColorDialog(
+fun InvalidScreen(
     colorsValue: Set<String>,
     onUnknownColorsMapped: (validColors: Map<String, String>) -> Unit,
     isDark: Boolean = false

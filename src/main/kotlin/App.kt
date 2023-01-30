@@ -4,7 +4,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import ui.screen.home.MainScreen
+import ui.screen.home.HomeScreen
 
 @ExperimentalMaterialApi
 fun main() = application {
@@ -15,6 +15,6 @@ fun main() = application {
         state = windowState,
         onCloseRequest = ::exitApplication,
     ) {
-        MainScreen()
+        HomeScreen()
     }
 }

@@ -13,7 +13,7 @@ import domain.VectorDrawableParser
 import model.SvgData
 import ui.theme.BaseVector
 
-class MainController(
+class HomeController(
     private val clipboardManager: ClipboardManager
 ) {
     var isDark by mutableStateOf(false)
