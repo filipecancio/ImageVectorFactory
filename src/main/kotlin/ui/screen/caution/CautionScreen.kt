@@ -1,4 +1,4 @@
-package ui.screen.invalid
+package ui.screen.caution
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -16,33 +16,34 @@ import ui.component.atom.CodeEdit
 import ui.component.molecule.CautionDialog
 import ui.theme.BaseColor
 
-val validColorValues = mutableMapOf<String, String>()
-
 @ExperimentalMaterialApi
 @Composable
-fun InvalidScreen(
+fun CautionScreen(
     colorsValue: Set<String>,
     onUnknownColorsMapped: (validColors: Map<String, String>) -> Unit,
     isDark: Boolean = false
-) = CautionDialog(
-    title = "Enter a valid color for those unknown colors",
-    confirmText = "Validate",
-    isDark = isDark,
-    onConfirm = { onUnknownColorsMapped(validColorValues) },
-    onDismiss = { onUnknownColorsMapped(emptyMap()) }
 ) {
-    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-        colorsValue.forEach { colorValue ->
-            var validColor by remember { mutableStateOf(TextFieldValue(colorValue)) }
-            CodeEdit(
-                isDark = isDark,
-                value = validColor,
-                onValueChange = {
-                    validColor = it
-                    validColorValues[colorValue] = it.text
-                },
-                modifier = defaultModifier(isDark)
-            )
+    val validColorValues = mutableMapOf<String, String>()
+    CautionDialog(
+        title = "Enter a valid color for those unknown colors",
+        confirmText = "Validate",
+        isDark = isDark,
+        onConfirm = { onUnknownColorsMapped(validColorValues) },
+        onDismiss = { onUnknownColorsMapped(emptyMap()) }
+    ) {
+        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+            colorsValue.forEach { colorValue ->
+                var validColor by remember { mutableStateOf(TextFieldValue(colorValue)) }
+                CodeEdit(
+                    isDark = isDark,
+                    value = validColor,
+                    onValueChange = {
+                        validColor = it
+                        validColorValues[colorValue] = it.text
+                    },
+                    modifier = defaultModifier(isDark)
+                )
+            }
         }
     }
 }

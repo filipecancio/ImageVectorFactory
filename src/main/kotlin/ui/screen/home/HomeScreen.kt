@@ -18,7 +18,7 @@ import ui.component.atom.TabButton
 import ui.component.molecule.ActionBar
 import ui.component.molecule.ImageView
 import ui.component.molecule.TopBar
-import ui.screen.invalid.InvalidScreen
+import ui.screen.caution.CautionScreen
 import ui.theme.BaseColor
 import ui.theme.getBaseType
 
@@ -103,7 +103,7 @@ fun HomeScreen() {
         }
         if (controller.unknownColors.isNotEmpty()) {
             controller.blur = 10F
-            InvalidScreen(
+            CautionScreen(
                 isDark = controller.isDark,
                 colorsValue = controller.unknownColors,
                 onUnknownColorsMapped = { controller.fixUnknownColors(it) },
